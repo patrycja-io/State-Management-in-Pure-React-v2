@@ -1,36 +1,33 @@
 import React, { useState } from 'react';
 
-import id from 'uuid/v4';
+const NewGrudge = ({ onSubmit }) => {
+  const [person, setPerson] = useState('');
+  const [reason, setReason] = useState('');
 
-import Grudges from './Grudges';
-import NewGrudge from './NewGrudge';
-
-import initialState from './initialState';
-
-const Application = () => {
-  const [grudges, setGrudges] = useState(initialState);
-
-  const addGrudge = grudge => {
-    grudge.id = id();
-    grudge.forgiven = false;
-    setGrudges([grudge, ...grudges]);
-  };
-
-  const toggleForgiveness = id => {
-    setGrudges(
-      grudges.map(grudge => {
-        if (grudge.id !== id) return grudge;
-        return { ...grudge, forgiven: !grudge.forgiven };
-      })
-    );
+  const handleChange = event => {
+    event.preventDefault();
+    onSubmit({ person, reason });
   };
 
   return (
-    <div className="Application">
-      <NewGrudge onSubmit={addGrudge} />
-      <Grudges grudges={grudges} onForgive={toggleForgiveness} />
-    </div>
+    <form className="NewGrudge" onSubmit={handleChange}>
+      <input
+        className="NewGrudge-input"
+        placeholder="Person"
+        type="text"
+        value={person}
+        onChange={event => setPerson(event.target.value)}
+      />
+      <input
+        className="NewGrudge-input"
+        placeholder="Reason"
+        type="text"
+        value={reason}
+        onChange={event => setReason(event.target.value)}
+      />
+      <input className="NewGrudge-submit button" type="submit" />
+    </form>
   );
 };
 
-export default Application;
+export default NewGrudge;
